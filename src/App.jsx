@@ -1,121 +1,90 @@
-import { useState } from 'react'
-import heroImg from './assets/hero.png'
-import reactLogo from './assets/react.svg'
-import viteLogo from './assets/vite.svg'
 import './App.css'
+import { useState } from 'react'
+import ExerciseCard from './components/ExerciseCard'
 
 function App() {
-  const [count, setCount] = useState(0)
+  const [exercises, setExercises] = useState([
+      { id: 1, nombre: 'Sentadillas', series: 3, repeticiones: 12, peso: 30 },
+      { id: 2, nombre: 'Press de banca', series: 4, repeticiones: 12, peso: 30 },
+      { id: 3, nombre: 'Peso muerto', series: 4, repeticiones: 12, peso: 30 }
+    ])
+  const [nombre, setNombre] = useState('Sentadillas')
+  const [series, setSeries] = useState(3)
+  const [repeticiones, setRepeticiones] = useState(12)
+  const [peso, setPeso] = useState(30)
+
+
+  function addExercise() {
+    setExercises([
+      ...exercises,
+      {
+        id: Date.now(),
+        nombre: nombre,
+        series: series,
+        repeticiones: repeticiones,
+        peso: peso
+
+      }
+    ])
+  }
 
   return (
-    <>
-      <section id="center">
-        <div className="hero">
-          <img src={heroImg} className="base" width="170" height="179" alt="" />
-          <img src={reactLogo} className="framework" alt="React logo" />
-          <img src={viteLogo} className="vite" alt="Vite logo" />
-        </div>
-        <div>
-          <h1>Get started</h1>
-          <p>
-            Edit <code>src/App.jsx</code> and save to test <code>HMR</code>
-          </p>
-        </div>
-        <button
-          type="button"
-          className="counter"
-          onClick={() => setCount((count) => count + 1)}
+    <main>
+      <h1>RepLog</h1>
+      <p>Your personal workout tracker</p>
+      <label>
+        Ejercicio
+        <select
+          value={nombre}
+          onChange={(e) => setNombre(e.target.value)}
         >
-          Count is {count}
-        </button>
-      </section>
+          <option value="Sentadillas">Sentadillas</option>
+          <option value="Press de banca">Press de banca</option>
+          <option value="Peso muerto">Peso muerto</option>
+          <option value="Curl de bíceps">Curl de bíceps</option>
+        </select>
+      </label>
 
-      <div className="ticks"></div>
+      <label>
+        Series
+        <input
+          type="number"
+          value={series}
+          onChange={(e) => setSeries(Number(e.target.value))}
+        />
+      </label>
 
-      <section id="next-steps">
-        <div id="docs">
-          <svg className="icon" role="presentation" aria-hidden="true">
-            <use href="/icons.svg#documentation-icon"></use>
-          </svg>
-          <h2>Documentation</h2>
-          <p>Your questions, answered</p>
-          <ul>
-            <li>
-              <a href="https://vite.dev/" target="_blank">
-                <img className="logo" src={viteLogo} alt="" />
-                Explore Vite
-              </a>
-            </li>
-            <li>
-              <a href="https://react.dev/" target="_blank">
-                <img className="button-icon" src={reactLogo} alt="" />
-                Learn more
-              </a>
-            </li>
-          </ul>
-        </div>
-        <div id="social">
-          <svg className="icon" role="presentation" aria-hidden="true">
-            <use href="/icons.svg#social-icon"></use>
-          </svg>
-          <h2>Connect with us</h2>
-          <p>Join the Vite community</p>
-          <ul>
-            <li>
-              <a href="https://github.com/vitejs/vite" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#github-icon"></use>
-                </svg>
-                GitHub
-              </a>
-            </li>
-            <li>
-              <a href="https://chat.vite.dev/" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#discord-icon"></use>
-                </svg>
-                Discord
-              </a>
-            </li>
-            <li>
-              <a href="https://x.com/vite_js" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#x-icon"></use>
-                </svg>
-                X.com
-              </a>
-            </li>
-            <li>
-              <a href="https://bsky.app/profile/vite.dev" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#bluesky-icon"></use>
-                </svg>
-                Bluesky
-              </a>
-            </li>
-          </ul>
-        </div>
-      </section>
+      <label>
+        Repeticiones
+        <input
+          type="number"
+          value={repeticiones}
+          onChange={(e) => setRepeticiones(Number(e.target.value))}
+        />
+      </label>
 
-      <div className="ticks"></div>
-      <section id="spacer"></section>
-    </>
+      <label>
+        Peso (kg)
+        <input
+          type="number"
+          value={peso}
+          onChange={(e) => setPeso(Number(e.target.value))}
+        />
+      </label>
+      <button onClick={addExercise}>
+        Agregar ejercicio
+      </button>
+
+      {exercises.map(exercise => (
+        <ExerciseCard
+          key={exercise.id}
+          nombre={exercise.nombre}
+          series={exercise.series}
+          repeticiones={exercise.repeticiones}
+          peso={exercise.peso}
+        />
+      ))}
+    </main>
   )
 }
 
